@@ -2,9 +2,9 @@ namespace WeatherStationClass.Classes;
 
 using WeatherStationClass.Interfaces;
 
-public class WeatherData
+public class WeatherData : ISubject
 {
-    private static WeatherData? instance;
+    private static WeatherData instance;
     IList<IObserver> subscribers = new List<IObserver>();
     private double temperature;
     private double humidity;

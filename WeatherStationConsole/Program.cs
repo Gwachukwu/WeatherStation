@@ -1,9 +1,10 @@
 ﻿using WeatherStationClass.Classes;
+using WeatherStationClass.Interfaces;
+using WeatherStationClass.Enums;
 
-// Initializing and using WeatherData and CurrentConditionsDisplay
+IDisplay currentConditionsDisplay = WeatherStation.CreateDisplay(DisplayEnum.CurrentConditionsDisplay);
+IDisplay forecastDisplay = WeatherStation.CreateDisplay(DisplayEnum.ForecastDisplay);
+IDisplay statisticsDisplay = WeatherStation.CreateDisplay(DisplayEnum.StatisticsDisplay);
+
 WeatherData weatherData = WeatherData.GetInstance();
-CurrentConditionsDisplay currentConditionsDisplay = new CurrentConditionsDisplay(weatherData);
-
-// Simulate new weather measurements
-weatherData.SetWeather(80, 65, 30.4f);
-weatherData.SetWeather(82, 70, 29.2f);
+weatherData.SetWeather(72, 50, 29.92);

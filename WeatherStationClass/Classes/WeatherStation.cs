@@ -1,23 +1,23 @@
 namespace WeatherStationClass.Classes;
 
 using WeatherStationClass.Interfaces;
+using WeatherStationClass.Enums;
 
 public class WeatherStation
 {
-    public static IDisplay CreateDisplay(ISubject weatherData)
+    public static IDisplay CreateDisplay(DisplayEnum displayType)
     {
-        switch (weatherData)
+        WeatherData weatherData = WeatherData.GetInstance();
+        switch (displayType)
         {
-            case CurrentConditionsDisplay:
+            case DisplayEnum.CurrentConditionsDisplay:
                 return new CurrentConditionsDisplay(weatherData);
-            case ForecastDisplay:
+            case DisplayEnum.ForecastDisplay:
                 return new ForecastDisplay(weatherData);
-            case StatisticsDisplay:
+            case DisplayEnum.StatisticsDisplay:
                 return new StatisticsDisplay(weatherData);
             default:
                 throw new ArgumentException("Invalid Display Command");
         }
     }
-
-    // Add methods to create other types of displays like StatisticsDisplay, ForecastDisplay, etc.
 }
