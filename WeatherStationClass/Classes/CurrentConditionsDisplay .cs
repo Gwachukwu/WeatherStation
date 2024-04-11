@@ -1,20 +1,34 @@
 namespace WeatherStationClass.Classes;
 
-using WeatherStationClass.interfaces;
+using WeatherStationClass.Interfaces;
+
+// public class DisplayDecorator : IDisplay
+// {
+//     private IDisplay wrappedDisplay;
+
+//     public DisplayDecorator(IDisplay display)
+//     {
+//         this.wrappedDisplay = display;
+//     }
+
+//     public void Display()
+//     {
+//         wrappedDisplay.Display();
+//         Console.WriteLine($"Updated At: {DateTime.Now}");
+//     }
+// }
 
 public class CurrentConditionsDisplay : IObserver, IDisplay
 {
-    private float temperature;
-    private float humidity;
-    private ISubject weatherData;
+    private double temperature;
+    private double humidity;
 
     public CurrentConditionsDisplay(ISubject weatherData)
     {
-        this.weatherData = weatherData;
-        weatherData.RegisterObserver(this);
+        weatherData.Subscribe(this);
     }
 
-    public void Update(float temperature, float humidity, float pressure)
+    public void Update(double temperature, double humidity, double pressure)
     {
         this.temperature = temperature;
         this.humidity = humidity;
@@ -24,22 +38,9 @@ public class CurrentConditionsDisplay : IObserver, IDisplay
     public void Display()
     {
         Console.WriteLine($"Current conditions: {temperature}F degrees and {humidity}% humidity");
-    }
-}
-
-public class DisplayDecorator : IDisplay
-{
-    private IDisplay wrappedDisplay;
-
-    public DisplayDecorator(IDisplay display)
-    {
-        this.wrappedDisplay = display;
-    }
-
-    public void Display()
-    {
-        wrappedDisplay.Display();
         Console.WriteLine($"Updated At: {DateTime.Now}");
     }
 }
+
+
 

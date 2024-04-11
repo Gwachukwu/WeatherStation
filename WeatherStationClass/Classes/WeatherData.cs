@@ -1,33 +1,19 @@
 namespace WeatherStationClass.Classes;
 
-using WeatherStationClass.interfaces;
+using WeatherStationClass.Interfaces;
 
-// IObserver interface
-public interface IObserver
+public class WeatherData
 {
-    void Update(float temperature, float humidity, float pressure);
-}
-
-// ISubject interface
-public interface ISubject
-{
-    void RegisterObserver(IObserver o);
-    void RemoveObserver(IObserver o);
-    void NotifyObservers();
-}
-
-public class WeatherData : ISubject
-{
-    private static WeatherData instance;
-    private List<IObserver> observers;
-    private float temperature;
-    private float humidity;
-    private float pressure;
+    private static WeatherData? instance;
+    IList<IObserver> subscribers = new List<IObserver>();
+    private double temperature;
+    private double humidity;
+    private double pressure;
 
     // Constructor is private for Singleton
     private WeatherData()
     {
-        observers = new List<IObserver>();
+        subscribers = new List<IObserver>();
     }
 
     // Public method to get the instance
@@ -40,34 +26,35 @@ public class WeatherData : ISubject
         return instance;
     }
 
-    public void RegisterObserver(IObserver o)
+    public void Subscribe(IObserver subscriber)
     {
-        observers.Add(o);
-    }
-
-    public void RemoveObserver(IObserver o)
-    {
-        observers.Remove(o);
-    }
-
-    public void NotifyObservers()
-    {
-        foreach (var observer in observers)
+        if (!subscribers.Contains(subscriber))
         {
-            observer.Update(temperature, humidity, pressure);
+            subscribers.Add(subscriber);
         }
     }
 
-    public void MeasurementsChanged()
+    public void UnSubscribe(IObserver subscriber)
     {
-        NotifyObservers();
+        if (subscribers.Contains(subscriber))
+        {
+            subscribers.Remove(subscriber);
+        }
     }
 
-    public void SetMeasurements(float temperature, float humidity, float pressure)
+    public void Notify()
+    {
+        foreach (var subscriber in subscribers)
+        {
+            subscriber.Update(temperature, humidity, pressure);
+        }
+    }
+
+    public void SetWeather(double temperature, double humidity, double pressure)
     {
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
-        MeasurementsChanged();
+        Notify();
     }
 }
