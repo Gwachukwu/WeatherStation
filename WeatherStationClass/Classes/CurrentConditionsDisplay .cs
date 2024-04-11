@@ -2,45 +2,24 @@ namespace WeatherStationClass.Classes;
 
 using WeatherStationClass.Interfaces;
 
-// public class DisplayDecorator : IDisplay
-// {
-//     private IDisplay wrappedDisplay;
-
-//     public DisplayDecorator(IDisplay display)
-//     {
-//         this.wrappedDisplay = display;
-//     }
-
-//     public void Display()
-//     {
-//         wrappedDisplay.Display();
-//         Console.WriteLine($"Updated At: {DateTime.Now}");
-//     }
-// }
-
-public class CurrentConditionsDisplay : IObserver, IDisplay
+public class CurrentConditionsDisplay : Decorator
 {
-    private double temperature;
-    private double humidity;
-
-    public CurrentConditionsDisplay(ISubject weatherData)
+    /// <summary>
+    /// Initializes a new instance of the CurrentConditionsDisplay class,
+    /// </summary>
+    /// <param name="weatherData">The weather data subject to subscribe to for updates.</param>
+    public CurrentConditionsDisplay(ISubject weatherData) : base(weatherData)
     {
-        weatherData.Subscribe(this);
     }
 
-    public void Update(double temperature, double humidity, double pressure)
+    /// <summary>
+    /// Displays the current weather conditions along with the current time.
+    /// Overrides the Display method from the Decorator class to add timestamp information
+    /// to the output.
+    /// </summary>
+    public override void Display()
     {
-        this.temperature = temperature;
-        this.humidity = humidity;
-        Display();
-    }
-
-    public void Display()
-    {
-        Console.WriteLine($"Current conditions: {temperature}F degrees and {humidity}% humidity");
-        Console.WriteLine($"Updated At: {DateTime.Now}");
+        base.Display();
+        Console.WriteLine($"Time is: {DateTime.Now}");
     }
 }
-
-
-
